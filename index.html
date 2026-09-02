@@ -1,0 +1,802 @@
+<title>Ponzing &amp; Glory</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600&display=swap');
+
+  :root{
+    --bg:#0b0a08;
+    --bg-elev:#161310;
+    --bg-elev-2:#1e1a15;
+    --ink:#f2ebdc;
+    --ink-soft:#978f7f;
+    --ink-faint:#5d574a;
+    --rose:#d99a9a;
+    --rose-deep:#c17a7a;
+    --gold:#c8a26a;
+    --warn:#cf8b62;
+    --line:rgba(242,235,220,0.10);
+    --line-strong:rgba(242,235,220,0.18);
+  }
+
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Work Sans', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', Georgia, serif;
+    font-weight:500;
+    margin:0;
+    text-wrap:balance;
+  }
+  em{ font-style:italic; color:var(--rose); }
+  p{ margin:0; line-height:1.7; }
+  a{ color:inherit; }
+  svg{ display:block; }
+  .icon{ width:18px; height:18px; stroke:currentColor; stroke-width:1.4; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+
+  .eyebrow{
+    display:block;
+    font-size:0.7rem;
+    letter-spacing:0.26em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    font-weight:500;
+  }
+  .eyebrow em{ color:var(--rose); font-style:normal; }
+  .eyebrow .dot{ color:var(--rose); margin:0 8px; }
+
+  .wrap{ max-width:980px; margin:0 auto; padding:0 28px; }
+
+  /* nav */
+  nav{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px; padding:20px 32px;
+    background:color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid transparent;
+    transition:border-color .3s ease;
+  }
+  nav.scrolled{ border-bottom-color:var(--line); }
+  .monogram{ font-family:'Fraunces', serif; font-size:1.05rem; letter-spacing:0.05em; }
+  .navlinks{ display:flex; gap:26px; font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase; }
+  .navlinks a{ text-decoration:none; color:var(--ink-soft); transition:color .2s ease; white-space:nowrap; }
+  .navlinks a:hover, .navlinks a:focus-visible{ color:var(--rose); }
+
+  /* hero */
+  header.hero{ padding:96px 28px 88px; text-align:center; }
+  .invite-line{
+    max-width:480px; margin:26px auto 0;
+    font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--ink-soft); line-height:2;
+  }
+  .hero h1{
+    margin-top:30px;
+    font-size:clamp(3rem, 9vw, 5.6rem);
+    line-height:1.02;
+  }
+  .hero .et{
+    display:block;
+    font-size:0.32em;
+    font-style:italic;
+    color:var(--ink-soft);
+    margin:6px 0;
+  }
+  .hero .tagline{
+    margin-top:22px;
+    font-size:0.72rem; letter-spacing:0.28em; text-transform:uppercase;
+    color:var(--ink-faint);
+  }
+
+  .heart-divider{ display:flex; justify-content:center; margin:40px 0 30px; color:var(--rose); }
+  .heart-divider svg{ width:16px; height:16px; }
+
+  .countdown{ display:flex; justify-content:center; gap:clamp(14px,4vw,34px); flex-wrap:wrap; }
+  .countdown .stat{ min-width:72px; }
+  .countdown .num{
+    font-family:'Fraunces', serif; font-variant-numeric:tabular-nums;
+    font-size:clamp(1.7rem,4vw,2.4rem); color:var(--ink); line-height:1;
+  }
+  .countdown .lbl{ margin-top:8px; font-size:0.64rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink-faint); }
+
+  .cta-row{ margin-top:46px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:13px 26px; border-radius:999px;
+    font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase;
+    text-decoration:none; border:1px solid var(--line-strong);
+    transition:transform .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
+    cursor:pointer; font-family:'Work Sans', sans-serif; font-weight:500;
+    color:var(--ink); background:transparent;
+  }
+  .btn:hover{ border-color:var(--rose); color:var(--rose); transform:translateY(-1px); }
+  .btn-solid{ background:var(--rose); border-color:var(--rose); color:#20130f; }
+  .btn-solid:hover{ background:var(--rose-deep); border-color:var(--rose-deep); color:#20130f; }
+
+  /* sections */
+  section{ padding:100px 0; border-top:1px solid var(--line); }
+  section .inner{ max-width:760px; margin:0 auto; }
+  .section-head{ text-align:center; margin-bottom:52px; }
+  .section-head h2{ font-size:clamp(1.9rem,4vw,2.5rem); margin-top:14px; }
+  .section-head .lede{ margin-top:16px; color:var(--ink-soft); font-size:0.96rem; max-width:480px; margin-left:auto; margin-right:auto; }
+  .two-tone{ color:var(--ink-soft); }
+
+  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+  @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
+
+  /* story */
+  .story{ font-size:1.02rem; color:var(--ink-soft); }
+  .story p + p{ margin-top:20px; }
+  .story .drop{ font-family:'Fraunces', serif; font-size:1.15rem; color:var(--ink); }
+
+  /* details cards */
+  .detail-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .detail-card{
+    background:var(--bg-elev); border:1px solid var(--line); border-radius:6px;
+    padding:22px 16px; text-align:center;
+  }
+  .detail-card .icon{ margin:0 auto 14px; color:var(--rose); }
+  .detail-card .dl{ font-size:0.62rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-faint); }
+  .detail-card .dv{ margin-top:8px; font-family:'Fraunces', serif; font-size:1.08rem; }
+  .detail-card .dn{ margin-top:6px; font-size:0.76rem; color:var(--ink-soft); }
+  .cal-row{ margin-top:32px; text-align:center; }
+
+  /* quote */
+  .quote{ text-align:center; }
+  .quote p{
+    font-family:'Fraunces', serif; font-style:italic; font-size:clamp(1.1rem,2.6vw,1.4rem);
+    color:var(--ink); line-height:1.6;
+  }
+  .quote cite{ display:block; margin-top:18px; font-style:normal; font-size:0.72rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-faint); }
+
+  /* programme */
+  .programme{ list-style:none; margin:0; padding:0; }
+  .programme li{ display:grid; grid-template-columns:96px 1fr; gap:24px; padding:22px 0; border-bottom:1px solid var(--line); align-items:baseline; }
+  .programme li:last-child{ border-bottom:none; }
+  .programme time{ font-family:'Fraunces', serif; color:var(--rose); font-size:0.92rem; }
+  .programme h3{ font-size:1.05rem; font-weight:500; }
+  .programme .note{ margin-top:4px; font-size:0.86rem; color:var(--ink-soft); }
+
+  /* registry */
+  .registry-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .reg-card{ background:var(--bg-elev); border:1px solid var(--line); border-radius:8px; padding:26px; }
+  .reg-card .rh{ display:flex; align-items:center; gap:10px; }
+  .reg-card .rh .icon{ color:var(--rose); }
+  .reg-card h3{ font-size:1rem; font-weight:500; font-family:'Work Sans',sans-serif; }
+  .reg-card .rsub{ font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-faint); margin-top:2px; }
+  .reg-card select{
+    width:100%; margin-top:18px; padding:12px 14px;
+    background:var(--bg-elev-2); color:var(--ink); border:1px solid var(--line-strong); border-radius:5px;
+    font-family:'Work Sans',sans-serif; font-size:0.88rem; outline:none;
+  }
+  .reveal-panel{
+    margin-top:14px; padding:14px; border-radius:5px; background:var(--bg-elev-2);
+    display:none; gap:8px; grid-template-columns:1fr auto; align-items:center;
+  }
+  .reveal-panel.show{ display:grid; }
+  .reveal-panel input{
+    background:transparent; border:none; color:var(--ink); font-family:'Work Sans',sans-serif;
+    font-size:0.84rem; outline:none; width:100%;
+  }
+  .copy-btn{
+    display:flex; align-items:center; gap:6px; background:transparent; border:1px solid var(--line-strong);
+    color:var(--ink-soft); border-radius:4px; padding:7px 10px; font-size:0.68rem; letter-spacing:0.06em;
+    text-transform:uppercase; cursor:pointer; font-family:'Work Sans',sans-serif;
+  }
+  .copy-btn:hover{ color:var(--rose); border-color:var(--rose); }
+  .reg-note{ margin-top:8px; font-size:0.74rem; color:var(--ink-faint); }
+  .gratitude-line{
+    margin-top:44px; text-align:center; font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink-faint);
+  }
+  .gratitude-line .icon{ display:inline-block; width:11px; height:11px; vertical-align:-1px; margin:0 8px; color:var(--rose); }
+
+  /* dress code */
+  .dc-note{ text-align:center; }
+  .dc-warn{
+    margin-top:14px; padding:12px 18px; border:1px solid color-mix(in srgb, var(--warn) 40%, transparent);
+    border-radius:6px; background:color-mix(in srgb, var(--warn) 10%, transparent);
+    color:var(--warn); font-size:0.82rem; text-align:center; max-width:460px; margin-left:auto; margin-right:auto;
+  }
+  .swatches{ display:flex; justify-content:center; gap:28px; margin-top:34px; }
+  .swatch{ text-align:center; }
+  .swatch .chip{
+    width:44px; height:44px; border-radius:50%; margin:0 auto; border:1px solid var(--line-strong);
+    box-shadow:0 8px 22px -12px rgba(0,0,0,0.6);
+  }
+  .swatch .chip.rose{ background:var(--rose); }
+  .swatch .chip.gold{ background:var(--gold); }
+  .swatch .name{ margin-top:10px; font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-soft); }
+
+  .looks{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:40px; }
+  .look{ text-align:center; }
+  .look .frame{
+    aspect-ratio:3/4; border-radius:6px; position:relative; overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .look .frame.rose-tone{ background:linear-gradient(160deg, #3a2426, #d99a9a 130%); }
+  .look .frame.gold-tone{ background:linear-gradient(160deg, #33291a, #c8a26a 130%); }
+  .look .frame span{
+    position:absolute; top:14px; left:14px; font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase;
+    color:rgba(255,251,244,0.85);
+  }
+  .look .caption{ margin-top:14px; font-family:'Fraunces', serif; font-style:italic; font-size:0.9rem; color:var(--ink-soft); }
+
+  /* travel */
+  .travel-block + .travel-block{ margin-top:44px; }
+  .travel-block h3{
+    display:flex; align-items:center; gap:10px;
+    font-size:0.98rem; font-weight:500; font-family:'Work Sans',sans-serif;
+  }
+  .travel-block h3 .icon{ color:var(--rose); }
+  .travel-block .tcopy{ margin-top:10px; font-size:0.9rem; color:var(--ink-soft); }
+
+  .callout{
+    margin-top:16px; background:var(--bg-elev); border:1px solid var(--line); border-radius:8px; padding:20px 22px;
+  }
+  .callout .ctitle{ font-size:0.7rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--rose); margin-bottom:10px; }
+  .callout ol{ margin:0; padding-left:18px; color:var(--ink-soft); font-size:0.86rem; line-height:1.9; }
+
+  .card-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:16px; }
+  .mini-card{ background:var(--bg-elev); border:1px solid var(--line); border-radius:6px; padding:16px; }
+  .mini-card .mh{ display:flex; align-items:center; gap:8px; font-size:0.86rem; font-weight:500; }
+  .mini-card .mh .icon{ width:15px; height:15px; color:var(--rose); }
+  .mini-card p{ margin-top:6px; font-size:0.78rem; color:var(--ink-soft); }
+
+  .chip-list{ display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+  .chip-list span{
+    padding:8px 14px; border:1px solid var(--line); border-radius:20px; font-size:0.8rem; color:var(--ink-soft);
+  }
+
+  .nearby-list{ list-style:none; margin:16px 0 0; padding:0; display:grid; gap:10px; }
+  .nearby-list li{ display:flex; align-items:center; gap:10px; font-size:0.86rem; color:var(--ink-soft); }
+  .nearby-list .icon{ width:14px; height:14px; color:var(--rose); flex-shrink:0; }
+
+  .find-us{
+    margin-top:16px; display:grid; grid-template-columns:1fr 1fr; gap:0;
+    background:var(--bg-elev); border:1px solid var(--line); border-radius:8px; overflow:hidden;
+  }
+  .find-us .fu-copy{ padding:26px; }
+  .find-us .fu-copy p{ font-size:0.86rem; color:var(--ink-soft); margin-top:6px; }
+  .find-us .fu-copy .btn{ margin-top:16px; padding:10px 20px; }
+  .map-art{ position:relative; background:var(--bg-elev-2); min-height:180px; }
+  .map-art svg{ width:100%; height:100%; }
+
+  /* rsvp */
+  form.rsvp{ display:grid; gap:18px; }
+  .field{ display:grid; gap:8px; }
+  .field label{ font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  input, textarea, select{
+    font-family:'Work Sans', sans-serif; font-size:0.92rem; color:var(--ink);
+    background:var(--bg-elev); border:1px solid var(--line-strong); border-radius:5px;
+    padding:12px 14px; outline:none; transition:border-color .2s ease;
+  }
+  input:focus, textarea:focus, select:focus{ border-color:var(--rose); }
+  textarea{ resize:vertical; min-height:90px; font-family:inherit; }
+  .attend-toggle{ display:flex; gap:10px; }
+  .attend-toggle input{ display:none; }
+  .attend-toggle label{
+    flex:1; text-align:center; padding:12px; border:1px solid var(--line-strong); border-radius:5px;
+    cursor:pointer; font-size:0.88rem; color:var(--ink-soft); transition:all .2s ease;
+  }
+  .attend-toggle input:checked + label{ border-color:var(--rose); background:color-mix(in srgb, var(--rose) 14%, transparent); color:var(--rose); }
+  .rsvp-submit{ border:none; width:100%; justify-content:center; }
+  .rsvp-status{ font-size:0.82rem; text-align:center; color:var(--ink-soft); min-height:1.2em; }
+  .rsvp-status.err{ color:var(--warn); }
+  .rsvp-status.ok{ color:var(--rose); }
+
+  .guestwall{ margin-top:56px; padding-top:36px; border-top:1px solid var(--line); }
+  .guestwall h3{
+    text-align:center; font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink-faint);
+    font-family:'Work Sans', sans-serif; font-weight:500; margin-bottom:20px;
+  }
+  .guestlist{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+  .guestlist .chip{ padding:8px 16px; border:1px solid var(--line); border-radius:20px; font-size:0.8rem; color:var(--ink-soft); }
+  .guestlist .chip strong{ color:var(--ink); font-weight:500; }
+  .guest-empty{ text-align:center; font-size:0.84rem; color:var(--ink-faint); font-style:italic; }
+
+  footer{ padding:64px 28px 40px; text-align:center; border-top:1px solid var(--line); }
+  .marquee{
+    font-family:'Fraunces', serif; font-weight:300; font-style:italic;
+    font-size:clamp(1.3rem,4vw,2.1rem); color:var(--ink-faint); letter-spacing:0.02em;
+  }
+  .marquee em{ color:var(--rose); font-style:italic; }
+  footer .fine{ margin-top:26px; color:var(--ink-faint); font-size:0.76rem; line-height:1.8; }
+  footer a{ color:var(--ink-soft); text-decoration:underline; text-underline-offset:3px; }
+
+  @media (max-width:760px){
+    .detail-grid{ grid-template-columns:1fr 1fr; }
+    .registry-grid, .find-us, .row2{ grid-template-columns:1fr; }
+    .card-grid{ grid-template-columns:1fr 1fr; }
+    .programme li{ grid-template-columns:1fr; gap:6px; }
+    nav{ padding:16px 20px; }
+    .navlinks{ gap:16px; font-size:0.66rem; }
+  }
+  @media (max-width:480px){
+    .detail-grid, .card-grid{ grid-template-columns:1fr; }
+  }
+</style>
+
+<nav id="nav">
+  <span class="monogram">P&nbsp;&middot;&nbsp;G</span>
+  <div class="navlinks">
+    <a href="#details">Details</a>
+    <a href="#gifts">Gifts</a>
+    <a href="#travel">Travel</a>
+    <a href="#rsvp">RSVP</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow"><em>&middot;</em> Est. 2026 <em>&middot;</em></span>
+    <p class="invite-line">With the blessing of both families, we joyfully invite you<br>to celebrate the union of</p>
+    <h1>Ponzing<span class="et">et</span>Glory</h1>
+    <span class="tagline">An intimate celebration of love</span>
+
+    <div class="heart-divider" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.7-10.2-9.3C.2 8.7 1.6 5 5.2 5c2 0 3.5 1 4.8 2.7C11.3 6 12.8 5 14.8 5c3.6 0 5 3.7 3.4 6.7C19.5 16.3 12 21 12 21z"/></svg>
+    </div>
+
+    <div class="countdown" id="countdown">
+      <div class="stat"><div class="num" id="cd-days">00</div><div class="lbl">Days</div></div>
+      <div class="stat"><div class="num" id="cd-hours">00</div><div class="lbl">Hours</div></div>
+      <div class="stat"><div class="num" id="cd-mins">00</div><div class="lbl">Minutes</div></div>
+      <div class="stat"><div class="num" id="cd-secs">00</div><div class="lbl">Seconds</div></div>
+    </div>
+
+    <div class="cta-row">
+      <a href="#rsvp" class="btn btn-solid">RSVP</a>
+      <a href="#story" class="btn">Our Story</a>
+    </div>
+  </div>
+</header>
+
+<section id="story">
+  <div class="wrap inner reveal">
+    <div class="section-head">
+      <span class="eyebrow">Prelude</span>
+      <h2>Our Story</h2>
+    </div>
+    <div class="story">
+      <p class="drop">It started, as these things often do in Jos, at someone else's party.</p>
+      <p>Ponzing was the friend of the groom at a mutual friend's owambe in 2019 &mdash; the one who kept refilling everyone's drinks and remembering names. Glory was the one who noticed. Three dances and one very long conversation about jollof rice later, they exchanged numbers and never really stopped talking.</p>
+      <p>Six years, two relocations, and one very patient dog later, Ponzing asked the question on a Sunday morning back in Jos &mdash; no cameras, no crowd, just the two of them and a very good cup of coffee. Now they can't wait to do it again, this time with everyone they love watching.</p>
+    </div>
+  </div>
+</section>
+
+<section id="details">
+  <div class="wrap inner reveal">
+    <div class="section-head">
+      <span class="eyebrow">The Details</span>
+      <h2>When &amp; Where</h2>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-card">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>
+        <div class="dl">Date</div>
+        <div class="dv">26 Dec 2026</div>
+        <div class="dn">Saturday</div>
+      </div>
+      <div class="detail-card">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+        <div class="dl">Time</div>
+        <div class="dv">3:30 PM WAT</div>
+        <div class="dn">Please be seated by 3:15</div>
+      </div>
+      <div class="detail-card">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 21s7-7.58 7-12a7 7 0 1 0-14 0c0 4.42 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        <div class="dl">Ceremony</div>
+        <div class="dv">COCIN Church</div>
+        <div class="dn">Rayfield, Jos</div>
+      </div>
+      <div class="detail-card">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M8 3h8l-1 7a3 3 0 0 1-6 0L8 3z"/><line x1="12" y1="13" x2="12" y2="20"/><line x1="9" y1="21" x2="15" y2="21"/></svg>
+        <div class="dl">Reception</div>
+        <div class="dv">Eliel Center</div>
+        <div class="dn">Gold &amp; Base Rd, Jos</div>
+      </div>
+    </div>
+
+    <div class="cal-row">
+      <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/calendar/render?action=TEMPLATE&text=Ponzing+%26+Glory%27s+Wedding&dates=20261226T143000Z/20261226T220000Z&details=Ceremony+at+COCIN+Church%2C+Rayfield%3B+Reception+to+follow+at+Eliel+Center%2C+Gold+%26+Base+Road&location=COCIN+Church%2C+Rayfield%2C+Jos">
+        <svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>
+        Add to Calendar
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="quote">
+  <div class="wrap inner reveal quote">
+    <p>&ldquo;Though one may be overpowered, two can defend themselves. A cord of three strands is not quickly broken.&rdquo;</p>
+    <cite>&mdash; Ecclesiastes 4:12</cite>
+  </div>
+</section>
+
+<section id="programme">
+  <div class="wrap inner reveal">
+    <div class="section-head">
+      <span class="eyebrow">Saturday, 26 December 2026</span>
+      <h2>The Programme</h2>
+    </div>
+    <ul class="programme">
+      <li><time>3:30 PM</time><div><h3>Guests Arrive &amp; Are Seated</h3><p class="note">Parking fills quickly &mdash; a little grace period helps</p></div></li>
+      <li><time>4:00 PM</time><div><h3>Ceremony</h3><p class="note">COCIN Church, Rayfield</p></div></li>
+      <li><time>5:00 PM</time><div><h3>Cocktail Hour &amp; Photographs</h3><p class="note">A short drive over to Eliel Center while we steal the couple away for portraits</p></div></li>
+      <li><time>6:30 PM</time><div><h3>Reception &amp; Dinner</h3><p class="note">Eliel Center, Gold &amp; Base Road</p></div></li>
+      <li><time>8:00 PM</time><div><h3>First Dance &amp; Toasts</h3></div></li>
+      <li><time>9:00 PM</time><div><h3>Dancing, Until Late</h3><p class="note">Bring your best moves</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<section id="gifts">
+  <div class="wrap inner reveal">
+    <div class="section-head">
+      <span class="eyebrow">With Gratitude</span>
+      <h2>Gift Registry</h2>
+      <p class="lede">Your presence is truly the only gift we need. For those who've asked how to help us start our new home, here are two easy ways.</p>
+    </div>
+
+    <div class="registry-grid">
+      <div class="reg-card">
+        <div class="rh">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="11" rx="1.5"/><path d="M4 9l8-5 8 5"/><line x1="9" y1="13" x2="9" y2="16"/><line x1="15" y1="13" x2="15" y2="16"/></svg>
+          <div><h3>Bank Transfer</h3><div class="rsub">Traditional Banking</div></div>
+        </div>
+        <select id="bankSelect">
+          <option value="">Select account&hellip;</option>
+          <option value="ngn">Naira Account</option>
+          <option value="usd">Dollar Account</option>
+        </select>
+        <div class="reveal-panel" id="bankPanel">
+          <input id="bankValue" type="text" readonly value="">
+          <button class="copy-btn" data-copy-target="bankValue" type="button">Copy</button>
+        </div>
+        <p class="reg-note">Account name: Ponzing &amp; Glory</p>
+      </div>
+
+      <div class="reg-card">
+        <div class="rh">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 8.5h3.2a1.8 1.8 0 0 1 0 3.6H9.5m0-3.6v7.2m0-3.6h3.6a1.8 1.8 0 0 1 0 3.6H9.5m1.5-8.4v1.2m0 8v1.2m3-9.2v1.2m0 8v1.2"/></svg>
+          <div><h3>Digital Assets</h3><div class="rsub">Bitcoin &amp; Stablecoins</div></div>
+        </div>
+        <select id="cryptoSelect">
+          <option value="">Select asset&hellip;</option>
+          <option value="btc">Bitcoin (BTC)</option>
+          <option value="usdt">USDT (Tron)</option>
+          <option value="eth">Ethereum (ETH)</option>
+        </select>
+        <div class="reveal-panel" id="cryptoPanel">
+          <input id="cryptoValue" type="text" readonly value="">
+          <button class="copy-btn" data-copy-target="cryptoValue" type="button">Copy</button>
+        </div>
+        <p class="reg-note">Please double-check the network before sending</p>
+      </div>
+    </div>
+
+    <div class="gratitude-line">With love, Ponzing &amp; Glory <svg class="icon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 21s-7.5-4.7-10.2-9.3C.2 8.7 1.6 5 5.2 5c2 0 3.5 1 4.8 2.7C11.3 6 12.8 5 14.8 5c3.6 0 5 3.7 3.4 6.7C19.5 16.3 12 21 12 21z"/></svg></div>
+  </div>
+</section>
+
+<section id="dresscode">
+  <div class="wrap inner reveal">
+    <div class="section-head dc-note">
+      <span class="eyebrow">Dress Code</span>
+      <h2>Colour of the Day</h2>
+      <p class="lede">We'd love for you to join us dressed in either of these elegant colours.</p>
+    </div>
+    <p class="dc-warn">A gentle note: please save white and ivory for the bride &mdash; every other rich colour is warmly welcome.</p>
+
+    <div class="swatches">
+      <div class="swatch"><div class="chip rose"></div><div class="name">Dusty Rose</div></div>
+      <div class="swatch"><div class="chip gold"></div><div class="name">Antique Gold</div></div>
+    </div>
+
+    <div class="looks">
+      <div class="look">
+        <div class="frame rose-tone"><span>Her Look</span></div>
+        <p class="caption">A soft, sophisticated rose</p>
+      </div>
+      <div class="look">
+        <div class="frame gold-tone"><span>His Look</span></div>
+        <p class="caption">Warm antique gold, richly textured</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="travel">
+  <div class="wrap inner reveal">
+    <div class="section-head">
+      <span class="eyebrow">Logistics &amp; Recommendations</span>
+      <h2>Travel <span class="two-tone">Guide</span></h2>
+    </div>
+
+    <div class="travel-block">
+      <h3><svg class="icon" viewBox="0 0 24 24"><path d="M10.5 21l1.5-6 7.5-4.5-1-2-8 2.5-4-3-2 .5 2.5 3.5-3 1 .5 1.5 3.5-1 1.5 5.5z"/></svg> Arrival</h3>
+      <p class="tcopy">Yakubu Gowon Airport (JOS) has limited direct flights, so most guests connect through Nnamdi Azikiwe International Airport in Abuja, then a short domestic hop or a scenic 3-hour drive up to Jos.</p>
+    </div>
+
+    <div class="callout">
+      <div class="ctitle">Bolt in Jos</div>
+      <ol>
+        <li>Install the Bolt app and add a card before you arrive</li>
+        <li>Availability is thinner than in bigger cities, especially outside the town centre &mdash; book a little ahead</li>
+        <li>Confirm the fare in-app before your driver starts moving</li>
+      </ol>
+    </div>
+
+    <div class="travel-block">
+      <h3><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="10" width="18" height="7" rx="2"/><circle cx="7.5" cy="19" r="1.5"/><circle cx="16.5" cy="19" r="1.5"/><path d="M5 10l2-5h10l2 5"/></svg> Getting Around</h3>
+      <p class="tcopy">Bolt covers most of the city, but a hired driver for the weekend is the most relaxed option if you're staying a few days &mdash; several hotels can arrange one. The plateau air means cooler evenings, so pack a light jacket.</p>
+    </div>
+
+    <div class="travel-block">
+      <h3><svg class="icon" viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v7"/><path d="M14 18v-4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v4"/><line x1="1" y1="18" x2="23" y2="18"/></svg> Where to Stay</h3>
+      <div class="card-grid">
+        <div class="mini-card"><div class="mh">Crest Hotel &amp; Villas</div><p>Block code PONZINGGLORY26 &middot; 10 min from venue</p></div>
+        <div class="mini-card"><div class="mh">Hill Station Hotel</div><p>Historic &amp; central &middot; 15 min from venue</p></div>
+        <div class="mini-card"><div class="mh">Grand Uba Hotel</div><p>Quiet &amp; comfortable &middot; 12 min from venue</p></div>
+      </div>
+    </div>
+
+    <div class="travel-block">
+      <h3><svg class="icon" viewBox="0 0 24 24"><path d="M6 3v6a3 3 0 0 0 6 0V3"/><path d="M9 9v12"/><path d="M17 3c-1.7 0-3 2-3 5s1.3 5 3 5V21"/></svg> Recommended</h3>
+      <div class="chip-list">
+        <span>Rayfield Garden Restaurant</span>
+        <span>Jos Museum Caf&eacute;</span>
+        <span>Crest Grill</span>
+        <span>Terrace Kitchen</span>
+      </div>
+    </div>
+
+    <div class="travel-block">
+      <h3><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg> Good to Know</h3>
+      <ul class="nearby-list">
+        <li><svg class="icon" viewBox="0 0 24 24"><path d="M12 21s7-7.58 7-12a7 7 0 1 0-14 0c0 4.42 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg> Jos Wildlife Park &mdash; a favourite for the little ones, 20 min away</li>
+        <li><svg class="icon" viewBox="0 0 24 24"><path d="M12 21s7-7.58 7-12a7 7 0 1 0-14 0c0 4.42 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg> Jos National Museum &mdash; pottery, ceramics &amp; Nigerian history</li>
+        <li><svg class="icon" viewBox="0 0 24 24"><path d="M12 21s7-7.58 7-12a7 7 0 1 0-14 0c0 4.42 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg> Shere Hills &mdash; for a quiet sunrise before the big day</li>
+      </ul>
+    </div>
+
+    <div class="find-us">
+      <div class="fu-copy">
+        <div class="ctitle" style="color:var(--rose);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px;">Find Us</div>
+        <p><strong style="color:var(--ink)">Ceremony</strong> &mdash; COCIN Church, Rayfield, Jos</p>
+        <p style="margin-top:14px;"><strong style="color:var(--ink)">Reception</strong> &mdash; Eliel Center, Gold &amp; Base Road, Jos</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
+          <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=COCIN+Church+Rayfield+Jos">Directions: Ceremony</a>
+          <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Eliel+Center+Gold+and+Base+Road+Jos">Directions: Reception</a>
+        </div>
+      </div>
+      <div class="map-art" aria-hidden="true">
+        <svg viewBox="0 0 200 180" preserveAspectRatio="xMidYMid slice">
+          <rect width="200" height="180" fill="var(--bg-elev-2)"/>
+          <g stroke="var(--line-strong)" stroke-width="1">
+            <line x1="0" y1="40" x2="200" y2="30"/>
+            <line x1="0" y1="100" x2="200" y2="110"/>
+            <line x1="40" y1="0" x2="30" y2="180"/>
+            <line x1="140" y1="0" x2="150" y2="180"/>
+          </g>
+          <circle cx="100" cy="70" r="6" fill="var(--rose)"/>
+          <path d="M100 70 a6 6 0 1 1 0.01 0" fill="var(--rose)"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="rsvp">
+  <div class="wrap inner reveal">
+    <div class="section-head">
+      <span class="eyebrow">Kindly Respond</span>
+      <h2>RSVP</h2>
+      <p class="lede">Please reply by 1 December 2026</p>
+    </div>
+
+    <form class="rsvp" id="rsvpForm">
+      <div class="field">
+        <label for="name">Full Name</label>
+        <input id="name" name="name" type="text" placeholder="e.g. Ada Okafor" required>
+      </div>
+
+      <div class="field">
+        <label>Will You Be Attending?</label>
+        <div class="attend-toggle">
+          <input type="radio" id="att-yes" name="attending" value="yes" checked>
+          <label for="att-yes">Joyfully Accepts</label>
+          <input type="radio" id="att-no" name="attending" value="no">
+          <label for="att-no">Regretfully Declines</label>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="guests">Number in Your Party</label>
+          <select id="guests" name="guests">
+            <option value="1">Just me</option>
+            <option value="2">2 guests</option>
+            <option value="3">3 guests</option>
+            <option value="4">4 guests</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="dietary">Dietary Notes</label>
+          <input id="dietary" name="dietary" type="text" placeholder="e.g. vegetarian, none">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="message">A Note for the Couple (optional)</label>
+        <textarea id="message" name="message" placeholder="Well wishes, a song request, anything at all"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-solid rsvp-submit" id="rsvpSubmit">Send RSVP</button>
+      <p class="rsvp-status" id="rsvpStatus"></p>
+    </form>
+
+    <div class="guestwall">
+      <h3>Who's Coming</h3>
+      <div class="guestlist" id="guestlist">
+        <p class="guest-empty">Be the first to RSVP &mdash; your name will appear here.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="marquee">Forever &middot; Ponzing <em>et</em> Glory &middot; Together</div>
+  <p class="fine">Questions? Reach us at <a href="mailto:hello@ponzingandglory.example">hello@ponzingandglory.example</a><br>Made with love for Ponzing &amp; Glory</p>
+</footer>
+
+<script>
+(function(){
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function(){
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window && !reduceMotion){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  var WEDDING_DATE = new Date('2026-12-26T15:30:00+01:00').getTime();
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function tick(){
+    var diff = WEDDING_DATE - Date.now();
+    if(diff < 0) diff = 0;
+    document.getElementById('cd-days').textContent = Math.floor(diff / 86400000);
+    document.getElementById('cd-hours').textContent = pad(Math.floor(diff % 86400000 / 3600000));
+    document.getElementById('cd-mins').textContent = pad(Math.floor(diff % 3600000 / 60000));
+    document.getElementById('cd-secs').textContent = pad(Math.floor(diff % 60000 / 1000));
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  // registry reveal panels
+  var bankValues = { ngn: 'MoniePoint · 8039094719', usd: 'Zenith · 5001234567' };
+  var cryptoValues = { btc: 'bc1q placeholder wallet address', usdt: 'T placeholder tron address', eth: '0x placeholder eth address' };
+
+  function wireSelect(selectId, panelId, inputId, values){
+    var sel = document.getElementById(selectId);
+    var panel = document.getElementById(panelId);
+    var input = document.getElementById(inputId);
+    sel.addEventListener('change', function(){
+      var v = values[sel.value];
+      if(v){ input.value = v; panel.classList.add('show'); }
+      else { panel.classList.remove('show'); input.value = ''; }
+    });
+  }
+  wireSelect('bankSelect', 'bankPanel', 'bankValue', bankValues);
+  wireSelect('cryptoSelect', 'cryptoPanel', 'cryptoValue', cryptoValues);
+
+  document.querySelectorAll('.copy-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var target = document.getElementById(btn.getAttribute('data-copy-target'));
+      var finish = function(label){
+        var original = 'Copy';
+        btn.textContent = label;
+        setTimeout(function(){ btn.textContent = original; }, 1500);
+      };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(target.value).then(function(){ finish('Copied'); }).catch(function(){
+          target.select(); finish('Select & Copy');
+        });
+      } else {
+        target.select(); finish('Select & Copy');
+      }
+    });
+  });
+
+  // RSVP + guest wall via db capability
+  var form = document.getElementById('rsvpForm');
+  var statusEl = document.getElementById('rsvpStatus');
+  var submitBtn = document.getElementById('rsvpSubmit');
+  var guestlistEl = document.getElementById('guestlist');
+  var db = null;
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function renderGuests(snap){
+    if(snap.empty){
+      guestlistEl.innerHTML = '<p class="guest-empty">Be the first to RSVP — your name will appear here.</p>';
+      return;
+    }
+    var html = snap.docs.map(function(d){
+      var data = d.data() || {};
+      var name = escapeHtml(data.name || 'A guest');
+      var extra = (data.guests && Number(data.guests) > 1) ? (' +' + (Number(data.guests) - 1)) : '';
+      return '<span class="chip"><strong>' + name + '</strong>' + extra + '</span>';
+    }).join('');
+    guestlistEl.innerHTML = html;
+  }
+
+  window.claude && window.claude.use('db').then(function(namespace){
+    db = namespace;
+    if(!db) return;
+    db.collection('rsvps')
+      .where('attending', '==', 'yes')
+      .orderBy('createdAt', 'desc')
+      .limit(8)
+      .onSnapshot(renderGuests, function(){ /* leave last known state */ });
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!db){
+      statusEl.textContent = "RSVP is warming up — please try again in a moment.";
+      statusEl.className = 'rsvp-status err';
+      return;
+    }
+    var data = {
+      name: form.name.value.trim(),
+      attending: form.attending.value,
+      guests: form.guests.value,
+      dietary: form.dietary.value.trim(),
+      message: form.message.value.trim(),
+      createdAt: Date.now()
+    };
+    if(!data.name){
+      statusEl.textContent = "Please tell us your name.";
+      statusEl.className = 'rsvp-status err';
+      return;
+    }
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    db.collection('rsvps').add(data).then(function(){
+      statusEl.textContent = "Thank you — your RSVP has been received.";
+      statusEl.className = 'rsvp-status ok';
+      form.reset();
+      submitBtn.textContent = 'Send RSVP';
+      submitBtn.disabled = false;
+    }).catch(function(){
+      statusEl.textContent = "Something went wrong — please try again.";
+      statusEl.className = 'rsvp-status err';
+      submitBtn.textContent = 'Send RSVP';
+      submitBtn.disabled = false;
+    });
+  });
+})();
+</script>
