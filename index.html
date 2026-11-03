@@ -1,3 +1,7 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ponzing &amp; Glory</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Work+Sans:wght@300;400;500;600&display=swap');
@@ -88,7 +92,7 @@
     margin:6px 0;
   }
   .hero .tagline{
-    margin-top:22px;
+    display:block; margin-top:22px;
     font-size:0.72rem; letter-spacing:0.28em; text-transform:uppercase;
     color:var(--ink-faint);
   }
@@ -261,8 +265,9 @@
   .nearby-list li{ display:flex; align-items:center; gap:10px; font-size:0.86rem; color:var(--ink-soft); }
   .nearby-list .icon{ width:14px; height:14px; color:var(--rose); flex-shrink:0; }
 
+  .callout + .travel-block{ margin-top:44px; }
   .find-us{
-    margin-top:16px; display:grid; grid-template-columns:1fr 1fr; gap:0;
+    margin-top:44px; display:grid; grid-template-columns:1fr 1fr; gap:0;
     background:var(--bg-elev); border:1px solid var(--line); border-radius:8px; overflow:hidden;
   }
   .find-us .fu-copy{ padding:26px; }
@@ -307,9 +312,29 @@
     .programme li{ grid-template-columns:1fr; gap:6px; }
     nav{ padding:16px 20px; }
     .navlinks{ gap:16px; font-size:0.66rem; }
+    section{ padding:72px 0; }
+    header.hero{ padding:72px 20px 64px; }
+    .section-head{ margin-bottom:40px; }
   }
   @media (max-width:480px){
-    .detail-grid, .card-grid{ grid-template-columns:1fr; }
+    .wrap{ padding:0 20px; }
+    .card-grid{ grid-template-columns:1fr; }
+    .detail-card{ padding:20px 12px; }
+    nav{ padding:14px 16px; }
+    .navlinks{ gap:12px; letter-spacing:0.1em; }
+    .invite-line br{ display:none; }
+    .hero .tagline{ letter-spacing:0.18em; text-wrap:balance; }
+    .countdown{ flex-wrap:nowrap; gap:8px; }
+    .countdown .stat{ flex:1; min-width:0; }
+    .countdown .lbl{ letter-spacing:0.12em; }
+    .swatches{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+    .swatch .name{ font-size:0.62rem; letter-spacing:0.06em; }
+    .cal-options .btn{ flex:1 1 40%; justify-content:center; }
+    .find-us .btn{ width:100%; justify-content:center; }
+    .find-us .fu-copy{ padding:22px 20px; }
+  }
+  @media (max-width:359px){
+    .detail-grid{ grid-template-columns:1fr; }
   }
 </style>
 
@@ -326,7 +351,7 @@
 <header class="hero">
   <div class="wrap">
     <span class="eyebrow"><em>&middot;</em> Est. 2026 <em>&middot;</em></span>
-    <p class="invite-line">With the blessing of both families, we joyfully invite you<br>to celebrate the union of</p>
+    <p class="invite-line">With the blessing of both families, we joyfully invite you <br>to celebrate the union of</p>
     <h1>Ponzing<span class="et">et</span>Glory</h1>
     <span class="tagline">An intimate celebration of love</span>
 
