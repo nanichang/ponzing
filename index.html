@@ -18,6 +18,7 @@
   }
 
   *{ box-sizing:border-box; }
+  [hidden]{ display:none !important; }
   body{
     margin:0;
     background:var(--bg);
@@ -145,6 +146,8 @@
   .detail-card .dv{ margin-top:8px; font-family:'Fraunces', serif; font-size:1.08rem; }
   .detail-card .dn{ margin-top:6px; font-size:0.76rem; color:var(--ink-soft); }
   .cal-row{ margin-top:32px; text-align:center; }
+  .cal-row .cal-label{ display:block; margin-bottom:14px; }
+  .cal-options{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
 
   /* quote */
   .quote{ text-align:center; }
@@ -217,8 +220,13 @@
   }
   .look .frame.blue-tone{ background:linear-gradient(160deg, #191970, #8aa4bf 130%); }
   .look .frame.silver-tone{ background:linear-gradient(160deg, #3a3d42, #e6e8ea 130%); }
+  .look .frame img{ width:100%; height:100%; object-fit:cover; object-position:center 30%; display:block; }
+  .look .frame::after{
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(180deg, rgba(0,0,0,0.45), transparent 28%);
+  }
   .look .frame span{
-    position:absolute; top:14px; left:14px; font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase;
+    position:absolute; top:14px; left:14px; z-index:1; font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase;
     color:rgba(255,251,244,0.85);
   }
   .look .caption{ margin-top:14px; font-family:'Fraunces', serif; font-style:italic; font-size:0.9rem; color:var(--ink-soft); }
@@ -264,56 +272,37 @@
   .map-art svg{ width:100%; height:100%; }
 
   /* rsvp */
-  .rsvp-contacts{ list-style:none; display:flex; flex-wrap:wrap; justify-content:center; gap:12px 32px; margin:0 0 36px; padding:0; }
+  .rsvp-contacts{ list-style:none; display:flex; flex-wrap:wrap; justify-content:center; gap:12px 32px; margin:0; padding:0; }
   .rsvp-contacts li{ text-align:center; }
   .rsvp-contacts .rc-name{ display:block; font-size:0.66rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-faint); }
   .rsvp-contacts a{ display:inline-block; margin-top:4px; font-family:'Fraunces', serif; font-size:1.05rem; color:var(--ink); text-decoration:none; transition:color .2s ease; }
   .rsvp-contacts a:hover, .rsvp-contacts a:focus-visible{ color:var(--rose); }
-  form.rsvp{ display:grid; gap:18px; }
-  .field{ display:grid; gap:8px; }
-  .field label{ font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-soft); }
-  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
-  input, textarea, select{
-    font-family:'Work Sans', sans-serif; font-size:0.92rem; color:var(--ink);
-    background:var(--bg-elev); border:1px solid var(--line-strong); border-radius:5px;
-    padding:12px 14px; outline:none; transition:border-color .2s ease;
-  }
-  input:focus, textarea:focus, select:focus{ border-color:var(--rose); }
-  textarea{ resize:vertical; min-height:90px; font-family:inherit; }
-  .attend-toggle{ display:flex; gap:10px; }
-  .attend-toggle input{ display:none; }
-  .attend-toggle label{
-    flex:1; text-align:center; padding:12px; border:1px solid var(--line-strong); border-radius:5px;
-    cursor:pointer; font-size:0.88rem; color:var(--ink-soft); transition:all .2s ease;
-  }
-  .attend-toggle input:checked + label{ border-color:var(--rose); background:color-mix(in srgb, var(--rose) 14%, transparent); color:var(--rose); }
-  .rsvp-submit{ border:none; width:100%; justify-content:center; }
-  .rsvp-status{ font-size:0.82rem; text-align:center; color:var(--ink-soft); min-height:1.2em; }
-  .rsvp-status.err{ color:var(--warn); }
-  .rsvp-status.ok{ color:var(--rose); }
 
-  .guestwall{ margin-top:56px; padding-top:36px; border-top:1px solid var(--line); }
-  .guestwall h3{
-    text-align:center; font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink-faint);
-    font-family:'Work Sans', sans-serif; font-weight:500; margin-bottom:20px;
+  footer{ position:relative; padding:28px 0; border-top:1px solid var(--line); overflow:hidden; }
+  footer::before, footer::after{
+    content:''; position:absolute; top:0; bottom:0; width:80px; z-index:1; pointer-events:none;
   }
-  .guestlist{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
-  .guestlist .chip{ padding:8px 16px; border:1px solid var(--line); border-radius:20px; font-size:0.8rem; color:var(--ink-soft); }
-  .guestlist .chip strong{ color:var(--ink); font-weight:500; }
-  .guest-empty{ text-align:center; font-size:0.84rem; color:var(--ink-faint); font-style:italic; }
-
-  footer{ padding:64px 28px 40px; text-align:center; border-top:1px solid var(--line); }
-  .marquee{
-    font-family:'Fraunces', serif; font-weight:300; font-style:italic;
-    font-size:clamp(1.3rem,4vw,2.1rem); color:var(--ink-faint); letter-spacing:0.02em;
+  footer::before{ left:0; background:linear-gradient(90deg, var(--bg), transparent); }
+  footer::after{ right:0; background:linear-gradient(270deg, var(--bg), transparent); }
+  .marquee{ display:flex; width:max-content; animation:marquee 30s linear infinite; }
+  footer:hover .marquee{ animation-play-state:paused; }
+  .marquee-group{
+    display:flex; align-items:center; flex-shrink:0;
+    gap:clamp(48px,8vw,96px); padding-right:clamp(48px,8vw,96px);
+    white-space:nowrap; opacity:0.5;
   }
-  .marquee em{ color:var(--rose); font-style:italic; }
-  footer .fine{ margin-top:26px; color:var(--ink-faint); font-size:0.76rem; line-height:1.8; }
-  footer a{ color:var(--ink-soft); text-decoration:underline; text-underline-offset:3px; }
+  .mq-name, .mq-soft{ font-family:'Fraunces', serif; font-size:clamp(2.25rem,6vw,3.75rem); line-height:1.1; }
+  .mq-name{ color:var(--ink); }
+  .mq-name em{ font-style:italic; color:var(--rose); }
+  .mq-soft{ color:color-mix(in srgb, var(--ink) 50%, transparent); }
+  .mq-est{ font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink-soft); }
+  .mq-heart{ width:16px; height:16px; color:var(--ink-soft); }
+  @keyframes marquee{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce){ .marquee{ animation:none; } }
 
   @media (max-width:760px){
     .detail-grid{ grid-template-columns:1fr 1fr; }
-    .registry-grid, .find-us, .row2{ grid-template-columns:1fr; }
+    .registry-grid, .find-us{ grid-template-columns:1fr; }
     .card-grid{ grid-template-columns:1fr 1fr; }
     .programme li{ grid-template-columns:1fr; gap:6px; }
     nav{ padding:16px 20px; }
@@ -391,8 +380,8 @@
       <div class="detail-card">
         <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
         <div class="dl">Time</div>
-        <div class="dv">3:30 PM WAT</div>
-        <div class="dn">Please be seated by 3:15</div>
+        <div class="dv">10:00 AM WAT</div>
+        <div class="dn">Please be seated by 9:45</div>
       </div>
       <div class="detail-card">
         <svg class="icon" viewBox="0 0 24 24"><path d="M12 21s7-7.58 7-12a7 7 0 1 0-14 0c0 4.42 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
@@ -409,10 +398,21 @@
     </div>
 
     <div class="cal-row">
-      <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/calendar/render?action=TEMPLATE&text=Ponzing+%26+Glory%27s+Wedding&dates=20261226T143000Z/20261226T220000Z&details=Ceremony+at+COCIN+Church%2C+Rayfield%3B+Reception+to+follow+at+Eliel+Center%2C+Gold+%26+Base+Road&location=COCIN+Church%2C+Rayfield%2C+Jos">
-        <svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>
-        Add to Calendar
-      </a>
+      <span class="eyebrow cal-label">Add to Calendar</span>
+      <div class="cal-options">
+        <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/calendar/render?action=TEMPLATE&text=Ponzing+%26+Glory%27s+Wedding&dates=20261226T090000Z/20261226T163000Z&details=Ceremony+at+COCIN+Church%2C+Rayfield%3B+Reception+to+follow+at+Eliel+Center%2C+Gold+%26+Base+Road&location=COCIN+Church%2C+Rayfield%2C+Jos">
+          <svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>
+          Google
+        </a>
+        <a class="btn" target="_blank" rel="noopener" href="https://outlook.live.com/calendar/0/deeplink/compose?path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&subject=Ponzing+%26+Glory%27s+Wedding&startdt=2026-12-26T09%3A00%3A00Z&enddt=2026-12-26T16%3A30%3A00Z&body=Ceremony+at+COCIN+Church%2C+Rayfield%3B+Reception+to+follow+at+Eliel+Center%2C+Gold+%26+Base+Road&location=COCIN+Church%2C+Rayfield%2C+Jos">
+          <svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>
+          Outlook
+        </a>
+        <a class="btn" id="icsLink" href="#" download="ponzing-glory-wedding.ics">
+          <svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>
+          Apple / .ics
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -431,12 +431,12 @@
       <h2>The Programme</h2>
     </div>
     <ul class="programme">
-      <li><time>3:30 PM</time><div><h3>Guests Arrive &amp; Are Seated</h3><p class="note">Parking fills quickly &mdash; a little grace period helps</p></div></li>
-      <li><time>4:00 PM</time><div><h3>Ceremony</h3><p class="note">COCIN Church, Rayfield</p></div></li>
-      <li><time>5:00 PM</time><div><h3>Cocktail Hour &amp; Photographs</h3><p class="note">A short drive over to Eliel Center while we steal the couple away for portraits</p></div></li>
-      <li><time>6:30 PM</time><div><h3>Reception &amp; Dinner</h3><p class="note">Eliel Center, Gold &amp; Base Road</p></div></li>
-      <li><time>8:00 PM</time><div><h3>First Dance &amp; Toasts</h3></div></li>
-      <li><time>9:00 PM</time><div><h3>Dancing, Until Late</h3><p class="note">Bring your best moves</p></div></li>
+      <li><time>10:00 AM</time><div><h3>Guests Arrive &amp; Are Seated</h3><p class="note">Parking fills quickly &mdash; a little grace period helps</p></div></li>
+      <li><time>10:30 AM</time><div><h3>Ceremony</h3><p class="note">COCIN Church, Rayfield</p></div></li>
+      <li><time>11:30 AM</time><div><h3>Cocktail Hour &amp; Photographs</h3><p class="note">A short drive over to Eliel Center while we steal the couple away for portraits</p></div></li>
+      <li><time>1:00 PM</time><div><h3>Reception &amp; Dinner</h3><p class="note">Eliel Center, Gold &amp; Base Road</p></div></li>
+      <li><time>2:30 PM</time><div><h3>First Dance &amp; Toasts</h3></div></li>
+      <li><time>3:30 PM</time><div><h3>Dancing, Until Late</h3><p class="note">Bring your best moves</p></div></li>
     </ul>
   </div>
 </section>
@@ -456,10 +456,10 @@
           <div><h3>Bank Transfer</h3><div class="rsub">Naira Account</div></div>
         </div>
         <div class="reveal-panel show" id="bankPanel">
-          <input id="bankValue" type="text" readonly value="MoniePoint · 8039094719" aria-label="Naira account details">
+          <input id="bankValue" type="text" readonly value="Opay · 8039094719" aria-label="Naira account details">
           <button class="copy-btn" data-copy-target="bankValue" type="button">Copy</button>
         </div>
-        <p class="reg-note">Account name: Ponzing &amp; Glory</p>
+        <p class="reg-note">Account name: Ponzing Ndam</p>
       </div>
     </div>
 
@@ -483,11 +483,11 @@
 
     <div class="looks">
       <div class="look">
-        <div class="frame blue-tone"><span>Her Look</span></div>
+        <div class="frame blue-tone"><img src="images/Glory2.jpeg" width="853" height="1280" loading="lazy" alt="Glory in a midnight-blue satin gown and matching gele, with white and silver beaded trim"><span>Her Look</span></div>
         <p class="caption">Midnight or dust blue, softly elegant</p>
       </div>
       <div class="look">
-        <div class="frame silver-tone"><span>His Look</span></div>
+        <div class="frame silver-tone"><img src="images/ponzing.jpeg" width="853" height="1280" loading="lazy" alt="Ponzing in a white agbada with silver embroidery, seated with hands resting on a cane"><span>His Look</span></div>
         <p class="caption">Crisp white with a touch of silver</p>
       </div>
     </div>
@@ -504,6 +504,16 @@
     <div class="travel-block">
       <h3><svg class="icon" viewBox="0 0 24 24"><path d="M10.5 21l1.5-6 7.5-4.5-1-2-8 2.5-4-3-2 .5 2.5 3.5-3 1 .5 1.5 3.5-1 1.5 5.5z"/></svg> Arrival</h3>
       <p class="tcopy">Yakubu Gowon Airport (JOS) has limited direct flights, so most guests connect through Nnamdi Azikiwe International Airport in Abuja, then a short domestic hop or a scenic 3-hour drive up to Jos.</p>
+    </div>
+
+    <div class="travel-block">
+      <h3><svg class="icon" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="15" rx="2"/><line x1="4" y1="11" x2="20" y2="11"/><circle cx="8" cy="15" r="1"/><circle cx="16" cy="15" r="1"/><line x1="7" y1="18" x2="7" y2="21"/><line x1="17" y1="18" x2="17" y2="21"/></svg> By Road</h3>
+      <p class="tcopy">Travelling by bus? These interstate lines run safe, reliable routes into Jos:</p>
+      <div class="chip-list">
+        <span>Valgee</span>
+        <span>Nengee</span>
+        <span>Bluewhales</span>
+      </div>
     </div>
 
     <div class="callout">
@@ -580,67 +590,26 @@
     <div class="section-head">
       <span class="eyebrow">Kindly Respond</span>
       <h2>RSVP</h2>
-      <p class="lede">Please reply by 1 December 2026</p>
+      <p class="lede">Please call or text either contact below by 1 December 2026 to confirm your attendance</p>
     </div>
 
     <ul class="rsvp-contacts">
       <li><span class="rc-name">Gwaknan</span><a href="tel:+2347054259543">0705 425 9543</a></li>
       <li><span class="rc-name">Shinplang</span><a href="tel:+2349011867424">0901 186 7424</a></li>
     </ul>
-
-    <form class="rsvp" id="rsvpForm">
-      <div class="field">
-        <label for="name">Full Name</label>
-        <input id="name" name="name" type="text" placeholder="e.g. Ada Okafor" required>
-      </div>
-
-      <div class="field">
-        <label>Will You Be Attending?</label>
-        <div class="attend-toggle">
-          <input type="radio" id="att-yes" name="attending" value="yes" checked>
-          <label for="att-yes">Joyfully Accepts</label>
-          <input type="radio" id="att-no" name="attending" value="no">
-          <label for="att-no">Regretfully Declines</label>
-        </div>
-      </div>
-
-      <div class="row2">
-        <div class="field">
-          <label for="guests">Number in Your Party</label>
-          <select id="guests" name="guests">
-            <option value="1">Just me</option>
-            <option value="2">2 guests</option>
-            <option value="3">3 guests</option>
-            <option value="4">4 guests</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="dietary">Dietary Notes</label>
-          <input id="dietary" name="dietary" type="text" placeholder="e.g. vegetarian, none">
-        </div>
-      </div>
-
-      <div class="field">
-        <label for="message">A Note for the Couple (optional)</label>
-        <textarea id="message" name="message" placeholder="Well wishes, a song request, anything at all"></textarea>
-      </div>
-
-      <button type="submit" class="btn btn-solid rsvp-submit" id="rsvpSubmit">Send RSVP</button>
-      <p class="rsvp-status" id="rsvpStatus"></p>
-    </form>
-
-    <div class="guestwall">
-      <h3>Who's Coming</h3>
-      <div class="guestlist" id="guestlist">
-        <p class="guest-empty">Be the first to RSVP &mdash; your name will appear here.</p>
-      </div>
-    </div>
   </div>
 </section>
 
 <footer>
-  <div class="marquee">Forever &middot; Ponzing <em>et</em> Glory &middot; Together</div>
-  <p class="fine">Questions? Reach us at <a href="mailto:hello@ponzingandglory.example">hello@ponzingandglory.example</a><br>Made with love for Ponzing &amp; Glory</p>
+  <div class="marquee" id="marquee">
+    <div class="marquee-group">
+      <span class="mq-name">Ponzing <em>et</em> Glory</span>
+      <span class="mq-est">Est. 2026</span>
+      <span class="mq-soft">Together</span>
+      <svg class="mq-heart" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.7-10.2-9.3C.2 8.7 1.6 5 5.2 5c2 0 3.5 1 4.8 2.7C11.3 6 12.8 5 14.8 5c3.6 0 5 3.7 3.4 6.7C19.5 16.3 12 21 12 21z"/></svg>
+      <span class="mq-soft">Forever</span>
+    </div>
+  </div>
 </footer>
 
 <script>
@@ -663,7 +632,7 @@
     revealEls.forEach(function(el){ el.classList.add('in'); });
   }
 
-  var WEDDING_DATE = new Date('2026-12-26T15:30:00+01:00').getTime();
+  var WEDDING_DATE = new Date('2026-12-26T10:00:00+01:00').getTime();
   function pad(n){ return String(n).padStart(2,'0'); }
   function tick(){
     var diff = WEDDING_DATE - Date.now();
@@ -675,6 +644,30 @@
   }
   tick();
   setInterval(tick, 1000);
+
+  // Repeat the footer line so the loop is seamless; copies are hidden from screen readers
+  var marquee = document.getElementById('marquee');
+  var marqueeGroup = marquee.firstElementChild;
+  for(var i = 0; i < 3; i++){
+    var copy = marqueeGroup.cloneNode(true);
+    copy.setAttribute('aria-hidden', 'true');
+    marquee.appendChild(copy);
+  }
+
+  var icsLink = document.getElementById('icsLink');
+  var ics = [
+    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Ponzing & Glory//Wedding//EN',
+    'BEGIN:VEVENT',
+    'UID:ponzing-glory-20261226@wedding',
+    'DTSTAMP:20261101T000000Z',
+    'DTSTART:20261226T090000Z',
+    'DTEND:20261226T163000Z',
+    "SUMMARY:Ponzing & Glory's Wedding",
+    'DESCRIPTION:Ceremony at COCIN Church\\, Rayfield. Reception to follow at Eliel Center\\, Gold & Base Road.',
+    'LOCATION:COCIN Church\\, Rayfield\\, Jos',
+    'END:VEVENT', 'END:VCALENDAR'
+  ].join('\r\n');
+  icsLink.href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
 
 
   document.querySelectorAll('.copy-btn').forEach(function(btn){
@@ -692,79 +685,6 @@
       } else {
         target.select(); finish('Select & Copy');
       }
-    });
-  });
-
-  // RSVP + guest wall via db capability
-  var form = document.getElementById('rsvpForm');
-  var statusEl = document.getElementById('rsvpStatus');
-  var submitBtn = document.getElementById('rsvpSubmit');
-  var guestlistEl = document.getElementById('guestlist');
-  var db = null;
-
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, function(c){
-      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
-    });
-  }
-
-  function renderGuests(snap){
-    if(snap.empty){
-      guestlistEl.innerHTML = '<p class="guest-empty">Be the first to RSVP — your name will appear here.</p>';
-      return;
-    }
-    var html = snap.docs.map(function(d){
-      var data = d.data() || {};
-      var name = escapeHtml(data.name || 'A guest');
-      var extra = (data.guests && Number(data.guests) > 1) ? (' +' + (Number(data.guests) - 1)) : '';
-      return '<span class="chip"><strong>' + name + '</strong>' + extra + '</span>';
-    }).join('');
-    guestlistEl.innerHTML = html;
-  }
-
-  window.claude && window.claude.use('db').then(function(namespace){
-    db = namespace;
-    if(!db) return;
-    db.collection('rsvps')
-      .where('attending', '==', 'yes')
-      .orderBy('createdAt', 'desc')
-      .limit(8)
-      .onSnapshot(renderGuests, function(){ /* leave last known state */ });
-  });
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    if(!db){
-      statusEl.textContent = "RSVP is warming up — please try again in a moment.";
-      statusEl.className = 'rsvp-status err';
-      return;
-    }
-    var data = {
-      name: form.name.value.trim(),
-      attending: form.attending.value,
-      guests: form.guests.value,
-      dietary: form.dietary.value.trim(),
-      message: form.message.value.trim(),
-      createdAt: Date.now()
-    };
-    if(!data.name){
-      statusEl.textContent = "Please tell us your name.";
-      statusEl.className = 'rsvp-status err';
-      return;
-    }
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending…';
-    db.collection('rsvps').add(data).then(function(){
-      statusEl.textContent = "Thank you — your RSVP has been received.";
-      statusEl.className = 'rsvp-status ok';
-      form.reset();
-      submitBtn.textContent = 'Send RSVP';
-      submitBtn.disabled = false;
-    }).catch(function(){
-      statusEl.textContent = "Something went wrong — please try again.";
-      statusEl.className = 'rsvp-status err';
-      submitBtn.textContent = 'Send RSVP';
-      submitBtn.disabled = false;
     });
   });
 })();
